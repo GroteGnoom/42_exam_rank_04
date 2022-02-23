@@ -1,13 +1,15 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char **argv, char **env) {
 	char previous = ';';
 	for (int start_part = 1; start_part < argc; start_part++) {
 		int i;
 		char next = 0;
-		int fds[2];
+		int fdsl;
+		int fdsr[2];
 		for (i = start_part; i < argc; i++) {
 			if (!strcmp(argv[i], "|") || !strcmp(argv[i], ";"))
 			{
@@ -15,26 +17,31 @@ int main(int argc, char **argv, char **env) {
 				break;
 			}
 		}
+		if (previous == '|')
+			fdsl = fdsr[0];
 		if (next == '|')
-				pipe(fds);
+				pipe(fdsr);
 		if (!fork()) {
 			printf("executing %s, previous is %c\n", argv[start_part], previous);
 			argv[i] = NULL;
 			if (next == '|')
 			{
-				dup2(fds[1], STDOUT_FILENO);
-				close(fds[0]);
+				dup2(fdsr[1], STDOUT_FILENO);
+				close(fdsr[0]);
 			}
 			else if (previous == '|')
 			{
-				dup2(fds[0], STDIN_FILENO);
+				dup2(fdsl, STDIN_FILENO);
 			}
 			execve(argv[start_part], argv + start_part, env);
 		}
-		close(fds[1]);
-		if (next == ';')
-			break;
+		close(fdsr[1]);
+		if (previous == '|')
+			close(fdsl);
+		//if (next == ';')
+		//	break;
 		start_part = i;
 		previous = next;
 	}
+	system("lsof -c microshell");
 }

@@ -1,2 +1,2 @@
-gcc main.c -Wall -Wextra -o microshell && ./microshell /bin/ls "|" /usr/bin/grep "m.*" ";" /bin/echo i love my microshell
+gcc main.c -Wall -Wextra -o microshell -g -fsanitize=address && ./microshell /bin/ls "|" /usr/bin/grep "m.*" ";" /bin/echo i love my microshell
 
