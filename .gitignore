@@ -1,0 +1,11 @@
+*.o
+*.a
+*.swp
+microshell
+a.out
+*.check
+tags
+*.gdb_history
+*.dSYM
+42-exam*
+
