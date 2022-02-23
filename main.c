@@ -42,10 +42,15 @@ int main(int argc, char **argv, char **env) {
 			continue;
 		if (!strncmp(argv[start_part], "cd", 2))
 		{
-			if (i - start_part > 1)
+			if (i - start_part > 2)
 				putstr("error: cd: bad arguments\n");
 			else
-				chdir(argv[start_part + 1]);
+				if (chdir(argv[start_part + 1]))
+				{
+					putstr("error: cd: cannot change directory to ");
+					putstr(argv[start_part]);
+					putstr("\n");
+				}
 			start_part = i;
 			continue;
 		}
