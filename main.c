@@ -82,6 +82,8 @@ int main(int argc, char **argv, char **env) {
 		close(fdsr[1]);
 		if (previous == '|')
 			close(fdsl);
+		if (next == ';')
+			waitpid(pid, &stat_loc, 0);
 		start_part = i;
 		previous = next;
 	}

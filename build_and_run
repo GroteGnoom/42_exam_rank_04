@@ -24,3 +24,8 @@ sleep 0.2
 printf "\n\n"
 
 ./microshell cd .. .. ";" /bin/ls ";" ";" /bin/echo test 2
+
+sleep 0.2
+printf "\n\n"
+
+./microshell cd .. .. ";" /bin/ls ";" ";"
