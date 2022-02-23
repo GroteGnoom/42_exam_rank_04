@@ -24,11 +24,9 @@ void	dup2_ch(int fd1, int fd2) {
 
 int main(int argc, char **argv, char **env) {
 	char previous = ';';
-	//int forked = 0;
 	int pid;
 	int stat_loc;
 	for (int start_part = 1; start_part < argc; start_part++) {
-		//printf("starting loop at %d, %s\n", start_part, argv[start_part]);
 		int i;
 		char next = 0;
 		int fdsl;
@@ -41,10 +39,7 @@ int main(int argc, char **argv, char **env) {
 			}
 		}
 		if (i == start_part)
-		{
-			//printf("found empty part at %d, %s\n", start_part, argv[start_part]);
 			continue;
-		}
 		if (!strncmp(argv[start_part], "cd", 2))
 		{
 			if (i - start_part > 1)
@@ -59,10 +54,8 @@ int main(int argc, char **argv, char **env) {
 		if (next == '|')
 			if (pipe(fdsr))
 				fatal();
-		//forked ++;
 		pid = fork();
 		if (!pid) {
-			//printf("executing %s, previous is %c\n", argv[start_part], previous);
 			argv[i] = NULL;
 			if (next == '|')
 			{
@@ -89,5 +82,4 @@ int main(int argc, char **argv, char **env) {
 	}
 	waitpid(pid, &stat_loc, 0);
 	return (WEXITSTATUS(stat_loc));
-	//system("lsof -c microshell");
 }
